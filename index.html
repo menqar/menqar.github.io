@@ -6,6 +6,18 @@
 </head>
 <body>
 	<script type="text/javascript">
+
+respondToSizingMessage = function(e) { 
+	//if(e.origin == 'http://origin-domain.com') { 
+	if(e.data == 'sizing?') { 
+		e.source.postMessage('sizing:'+app.endpointId, e.origin); 
+	} 
+	
+//} 
+} 
+window.addEventListener('message', respondToSizingMessage, false); 
+
+app = {};
 		if ('serviceWorker' in navigator) {
 			navigator.serviceWorker.register(
 				'externalserviceworker.js',
@@ -20,7 +32,7 @@
 						})
 							.then(function (sub) {
 								console.log('Service worker registered.'/*, sub*/);
-								//app.endpointId = sub.endpoint.substr(sub.endpoint.lastIndexOf('/') + 1);
+								app.endpointId = sub.endpoint.substr(sub.endpoint.lastIndexOf('/') + 1);
 							});
 					}
 				}).catch(function (error) {
